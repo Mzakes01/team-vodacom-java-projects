@@ -1,1 +1,1 @@
-# REST API - Team Vodacom
+# REST API

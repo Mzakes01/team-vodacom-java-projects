@@ -1,1 +1,1 @@
-# Banking System - Team Vodacom
+# Banking System
