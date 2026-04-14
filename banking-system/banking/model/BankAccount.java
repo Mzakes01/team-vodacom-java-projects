@@ -1,0 +1,55 @@
+package banking.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class BankAccount {
+
+    private String accountNumber;
+    private String ownerName;
+    private double balance;
+    private List<String> transactions;
+
+    public BankAccount(String accountNumber, String ownerName, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.ownerName = ownerName;
+        this.balance = initialBalance;
+        this.transactions = new ArrayList<>();
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public List<String> getTransactions() {
+        return transactions;
+    }
+
+    protected void deductFromBalance(double amount) {
+        balance -= amount;
+    }
+
+    public abstract void withdraw(double amount) throws Exception;
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            transactions.add("Deposited: " + amount);
+        }
+    }
+
+    public void printStatement() {
+        int start = Math.max(0, transactions.size() - 5);
+        for (int i = start; i < transactions.size(); i++) {
+            System.out.println(transactions.get(i));
+        }
+    }
+}
