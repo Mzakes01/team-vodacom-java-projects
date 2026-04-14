@@ -37,16 +37,18 @@ public abstract class BankAccount {
         balance -= amount;
     }
 
-    public abstract void withdraw(double amount) throws Exception;
+    public abstract void withdraw(double amount) throws InsufficientFundsException;
 
     public void deposit(double amount) {
-        if (amount > 0) {
-            balance += amount;
-            transactions.add("Deposited: " + amount);
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be greater than 0");
         }
+        balance += amount;
+        transactions.add("Deposit: R" + amount + " | Balance: R" + balance);
     }
 
     public void printStatement() {
+        System.out.println("Last Transactions:");
         int start = Math.max(0, transactions.size() - 5);
         for (int i = start; i < transactions.size(); i++) {
             System.out.println(transactions.get(i));
