@@ -11,6 +11,7 @@ so we will be using "LocalDateTime" so that it is able
 to retrieve that information
 */
 import java.time.LocalDateTime;
+//Missing DateTimeFormatter import for proper timestamp formatting.
 
 //Creating class named "Transaction"
 public class Transaction {
@@ -61,7 +62,7 @@ public LocalDateTime getTimestamp(){
 //Creating the format for the timestamp
 @Override //Telling Java that this method is to replace the method from a parent class
 public String toString(){
-    return "[" + timestamp.toString().replace("T", " ").substring(0,16) + "] "
+    return "[" + timestamp.toString().replace("T", " ").substring(0,16) + "] " // Use DateTimeFormatter instead of string manipulation
              + type + " R " + String.format("%.2f", amount)
              + " Balance: R " + String.format("%.2f", balanceAfter);
 }
