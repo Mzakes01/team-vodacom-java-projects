@@ -40,34 +40,70 @@ class Transaction {
     }
 }
 
-//  Account
-class Account {
-    private double balance;
-    private final List<Transaction> history = new ArrayList<>();
+// Bank Account
+abstract class BankAccount {
+    package banking.model;
 
-    public Account(double initialBalance) {
+import java.util.ArrayList;
+import java.util.List;
+
+public abstract class BankAccount {
+
+    private String accountNumber;
+    private String ownerName;
+    private double balance;
+    private List<Transaction> transactions; // We must store Transaction objects, not plain text.
+
+    public BankAccount(String accountNumber, String ownerName, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.ownerName = ownerName;
         this.balance = initialBalance;
-        history.add(new Transaction("OPEN", initialBalance, initialBalance));
+        this.transactions = new ArrayList<>();
+
+        //opening transaction
+        transactions.add(new Transaction(Transaction.Type.DESPOSIT,initialBalance,initialBalance));//changed it from string list to a tansaction class
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
     }
 
     public double getBalance() {
         return balance;
     }
 
-    public void deposit(double amount) {
-        balance += amount;
-        history.add(new Transaction("DEPOSIT", amount, balance));
+    public List<Transaction> getTransactions() { //Method must return the correct type .SO instead of string it should be transaction
+        return transactions;
     }
 
-    public void withdraw(double amount) throws InsufficientFundsException {
-        if (amount > balance) {
-            throw new InsufficientFundsException(
-                    String.format("Insufficient funds. Requested: R%.2f  |  Available: R%.2f",
-                            amount, balance));
-        }
+    protected void deductFromBalance(double amount) {
         balance -= amount;
-        history.add(new Transaction("WITHDRAW", amount, balance));
     }
+
+    public abstract void withdraw(double amount) throws InsufficientFundsException;
+
+    public void deposit(double amount) {
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Deposit amount must be greater than 0");
+        }
+        balance += amount;
+        transactions.add(new Transaction(Transaction.Type.DEPOSIT,amount,balance));//deposit now stores the a transaction object
+    }
+
+    public void printStatement() {
+        System.out.println("Last Transactions:");
+        int start = Math.max(0, transactions.size() - 5);
+        for (int i = start; i < transactions.size(); i++) {
+            System.out.println(transactions.get(i));
+        }
+    }
+}
+    
+}
 
     public List<Transaction> getHistory() {
         return history;
