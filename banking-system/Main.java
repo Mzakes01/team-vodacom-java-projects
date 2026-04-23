@@ -14,12 +14,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-//  Custom Exception
-class InsufficientFundsException extends Exception {
-    public InsufficientFundsException(String message) {
-        super(message);
-    }
-}
 
 //  Transaction record
 class Transaction {
@@ -41,12 +35,6 @@ class Transaction {
 }
 
 // Bank Account
-abstract class BankAccount {
-    package banking.model;
-
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class BankAccount {
 
     private String accountNumber;
@@ -107,6 +95,62 @@ public abstract class BankAccount {
 
     public List<Transaction> getHistory() {
         return history;
+    }
+}
+
+//Savings Account
+public class SavingsAccount extends BankAccount {
+    //The minimum balance that must remain in the account at all times.
+     
+
+    private final double minimumBalance;
+
+    // Constructor
+    public SavingsAccount(String accountNumber, String ownerName, double initialBalance, double minimumBalance) {
+        super(accountNumber, ownerName, initialBalance);
+        this.minimumBalance = minimumBalance;
+    }
+
+    // Getter
+    public double getMinimumBalance() {
+        return minimumBalance;
+    }
+
+    // Override withdraw method
+    @Override
+   
+    public void withdraw(double amount) throws InsufficientFundsException {
+        
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Amount must be greater than 0");
+        }
+
+        if (getBalance() - amount < minimumBalance) {
+            throw new InsufficientFundsException(amount, getBalance() - minimumBalance);
+        }
+
+        // Deduct money
+        deductFromBalance(amount);
+
+        // Record transaction
+        Transaction transaction = new Transaction(
+                Transaction.Type.WITHDRAWAL,
+                amount,
+                getBalance()
+        );
+
+        getTransactions().add(transaction); //there's no method called "addTransaction", but there is "getTransactions"
+    }
+
+    // toString method
+    @Override
+    public String toString() {
+        return "SavingsAccount{" +
+                "accountNumber='" + getAccountNumber() + '\'' +
+                ", owner='" + getOwnerName() + '\'' +
+                ", balance=" + getBalance() +
+                ", minimumBalance=" + minimumBalance +
+                '}';
     }
 }
 
