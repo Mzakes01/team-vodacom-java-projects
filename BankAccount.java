@@ -8,7 +8,7 @@ public abstract class BankAccount {
     private String accountNumber;
     private String ownerName;
     private double balance;
-    private List<Transaction> transactions; // We must store Transaction objects, not plain text.
+    private List<Transaction> transactions; 
 
     public BankAccount(String accountNumber, String ownerName, double initialBalance) {
         this.accountNumber = accountNumber;
@@ -29,7 +29,7 @@ public abstract class BankAccount {
         return balance;
     }
 
-    public List<Transaction> getTransactions() { //Method must return the correct type .SO instead of string it should be transaction
+    public List<Transaction> getTransactions() { 
         return transactions;
     }
 
@@ -44,7 +44,7 @@ public abstract class BankAccount {
             throw new IllegalArgumentException("Deposit amount must be greater than 0");
         }
         balance += amount;
-        transactions.add(new Transaction("Deposit", amount, balance)); //Must create a Transaction object instead of a String.
+        transactions.add(new Transaction("Deposit", amount, balance)); 
     }
 
     public void printStatement() {
